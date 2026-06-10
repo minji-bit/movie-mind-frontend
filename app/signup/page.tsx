@@ -48,16 +48,19 @@ export default function SignupPage() {
           type="text"
           placeholder="닉네임"
           onChange={handleNicknameChange}
+          value={nickname}
         />
         <input
           type="password"
           placeholder="비밀번호"
           onChange={handlePasswordChange}
+          value={password}
         />
         <input
           type="password"
           placeholder="비밀번호 확인"
           onChange={handlePasswordConfirmChange}
+          value={passwordConfirm}
         />
         <button type="submit">회원가입</button>
       </form>
