@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { login } from "@/lib/api/auth.api";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -16,13 +17,25 @@ export default function LoginPage() {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(email, password);
-    //로그인 성공시 토큰 저장
-    localStorage.setItem("accessToken", "1234567890");
-    //로그인 성공시
-    router.push("/reviews");
+    try {
+      const response = await login({ email, password });
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        throw new Error(data.message); //이메일 또는 비밀번호가 일치하지 않습니다.
+      }
+      //로그인 성공
+      localStorage.setItem("accessToken", data.accessToken);
+      router.push("/reviews"); //로그인 성공시 리뷰 페이지로 이동
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message); //이메일 또는 비밀번호가 일치하지 않습니다.
+      } else {
+        console.error("로그인 실패");
+      }
+    }
   };
   return (
     <div>

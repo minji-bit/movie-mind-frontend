@@ -1,5 +1,5 @@
 import { apiFetch } from "./client";
-import { SignupRequest } from "@/types/auth";
+import { LoginRequest, SignupRequest } from "@/types/auth";
 import { SignupResponse } from "@/types/auth";
 export async function signUp(request: SignupRequest) {
   const response = await apiFetch("/auth/signup", {
@@ -8,10 +8,12 @@ export async function signUp(request: SignupRequest) {
   });
   return response;
 }
-export async function login() {
+export async function login(request: LoginRequest) {
   const response = await apiFetch("/auth/login", {
     method: "POST",
+    body: JSON.stringify(request),
   });
+  return response;
 }
 export async function getMe() {
   const response = await apiFetch("/auth/me", {
