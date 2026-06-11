@@ -31,10 +31,14 @@ export default function SignupPage() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (password !== passwordConfirm) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
     try {
       const response = await signUp({ email, password, nickname });
+      const data = await response.json();
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.message); //이메일이 이미 존재합니다.
       }
       router.push("/login"); //회원가입 성공시 로그인 페이지로 이동
