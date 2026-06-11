@@ -1,6 +1,6 @@
 import { apiFetch } from "./client";
 import { LoginRequest, SignupRequest } from "@/types/auth";
-import { SignupResponse } from "@/types/auth";
+
 export async function signUp(request: SignupRequest) {
   const response = await apiFetch("/auth/signup", {
     method: "POST",

@@ -22,7 +22,6 @@ export default function LoginPage() {
     try {
       const response = await login({ email, password });
       const data = await response.json();
-      console.log(data);
       if (!response.ok) {
         throw new Error(data.message); //이메일 또는 비밀번호가 일치하지 않습니다.
       }
