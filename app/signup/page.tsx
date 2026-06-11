@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signUp } from "@/lib/api/auth.api";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -28,11 +29,22 @@ export default function SignupPage() {
     setPasswordConfirm(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(email, nickname, password, passwordConfirm);
-    //로그인 성공시
-    router.push("/login");
+    try {
+      const response = await signUp({ email, password, nickname });
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message); //이메일이 이미 존재합니다.
+      }
+      router.push("/login"); //회원가입 성공시 로그인 페이지로 이동
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message); //이메일이 이미 존재합니다.
+      } else {
+        console.error("회원가입 실패");
+      }
+    }
   };
   return (
     <div>

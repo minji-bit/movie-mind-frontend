@@ -1,8 +1,12 @@
 import { apiFetch } from "./client";
-export async function signUp() {
-  const response = await apiFetch("/auth/singup", {
+import { SignupRequest } from "@/types/auth";
+import { SignupResponse } from "@/types/auth";
+export async function signUp(request: SignupRequest) {
+  const response = await apiFetch("/auth/signup", {
     method: "POST",
+    body: JSON.stringify(request),
   });
+  return response;
 }
 export async function login() {
   const response = await apiFetch("/auth/login", {

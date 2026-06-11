@@ -8,10 +8,5 @@ export async function apiFetch(url: string, options?: RequestInit) {
       ...options?.headers,
     },
   });
-  if (!response.ok) {
-    throw new Error(
-      `HTTP error! status: ${response.status}, message: ${response.statusText}`,
-    );
-  }
-  return response.json();
+  return response;
 }
