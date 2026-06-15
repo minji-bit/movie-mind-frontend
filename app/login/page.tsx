@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/api/auth.api";
+import { setAccessToken } from "@/lib/token";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -26,7 +27,7 @@ export default function LoginPage() {
         throw new Error(data.message); //이메일 또는 비밀번호가 일치하지 않습니다.
       }
       //로그인 성공
-      localStorage.setItem("accessToken", data.accessToken);
+      setAccessToken(data.accessToken);
       router.push("/reviews"); //로그인 성공시 리뷰 페이지로 이동
     } catch (error: unknown) {
       if (error instanceof Error) {

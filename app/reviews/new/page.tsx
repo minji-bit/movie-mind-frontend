@@ -3,6 +3,7 @@ import { createReview } from "@/lib/api/review.api";
 import { CreateReviewRequest } from "@/types/review";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { getAccessToken } from "@/lib/token";
 
 export default function NewReviewPage() {
   const [movieTitle, setMovieTitle] = useState("");
@@ -31,7 +32,7 @@ export default function NewReviewPage() {
       rating,
     };
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      const accessToken = getAccessToken() ?? "";
       if (!accessToken) {
         console.error("로그인이 필요합니다.");
         router.push("/login");
