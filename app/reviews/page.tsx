@@ -1,4 +1,5 @@
 "use client";
+import ReviewCard from "@/components/review/ReviewCard";
 import { getReviews } from "@/lib/api/review.api";
 import { Review } from "@/types/review";
 import { useEffect, useState } from "react";
@@ -19,7 +20,8 @@ export default function ReviewsPage() {
         }
         const data = await response.json();
         setReviews(data);
-      } catch (error) {
+      } catch {
+        //catch 하위에서 error 를 안쓰니까 catch(error){} 대신 catch{} 로 사용
         setErrorMessage("서버와 통신 중 오류가 발생했습니다.");
       } finally {
         setIsLoading(false);
@@ -27,17 +29,20 @@ export default function ReviewsPage() {
     };
     fetchReviews();
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (errorMessage) {
+    return <div>{errorMessage}</div>;
+  }
   return (
     <div>
-      {isLoading && <div>Loading...</div>}
-      {errorMessage && <div>{errorMessage}</div>}
-      <ul>
+      <h1 className="text-2xl font-bold mb-4">리뷰 목록</h1>
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {reviews.length > 0 ? (
           reviews.map((review) => (
-            <li key={review.id}>
-              {review.movieTitle}/{review.reviewTitle}/{review.content}/ ⭐
-              {review.rating}/ {new Date(review.createdAt).toLocaleDateString()}
-            </li>
+            <ReviewCard key={review.id} review={review} />
           ))
         ) : (
           <li>등록된 리뷰가 없습니다.</li>
