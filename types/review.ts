@@ -6,3 +6,10 @@ export interface Review {
   rating: number;
   createdAt: string;
 }
+
+export interface CreateReviewRequest {
+  movieTitle: string;
+  reviewTitle: string;
+  content: string;
+  rating: number;
+}
