@@ -28,3 +28,13 @@ export async function getReview(id: string) {
   });
   return response;
 }
+
+export async function deleteReview(id: string, accessToken: string) {
+  const response = await apiFetch(`/reviews/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response;
+}
