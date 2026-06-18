@@ -40,7 +40,9 @@ export default function ReviewPage() {
       router.push("/reviews");
     }
   };
-
+  const handleUpdate = async () => {
+    router.push(`/reviews/${id}/edit`);
+  };
   return (
     <div>
       <p className="text-lg mb-2">영화제목 : {data?.movieTitle}</p>
@@ -57,6 +59,12 @@ export default function ReviewPage() {
         onClick={handleDelete}
       >
         삭제
+      </button>
+      <button
+        className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        onClick={handleUpdate}
+      >
+        수정
       </button>
     </div>
   );

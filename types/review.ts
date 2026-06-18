@@ -23,3 +23,10 @@ export interface ReviewResponse {
   createdAt: string;
   message?: string;
 }
+
+export interface UpdateReviewRequest {
+  movieTitle?: string;
+  reviewTitle?: string;
+  content?: string;
+  rating?: number;
+}

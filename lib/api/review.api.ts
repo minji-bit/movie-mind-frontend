@@ -1,4 +1,4 @@
-import { CreateReviewRequest } from "@/types/review";
+import { CreateReviewRequest, UpdateReviewRequest } from "@/types/review";
 import { apiFetch } from "./client";
 
 export async function getReviews() {
@@ -35,6 +35,21 @@ export async function deleteReview(id: string, accessToken: string) {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
+  });
+  return response;
+}
+
+export async function updateReview(
+  id: string,
+  accessToken: string,
+  review: UpdateReviewRequest,
+) {
+  const response = await apiFetch(`/reviews/${id}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(review),
   });
   return response;
 }
