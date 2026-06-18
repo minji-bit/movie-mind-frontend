@@ -1,6 +1,14 @@
+"use client";
+import { removeAccessToken } from "@/lib/token";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
+  const router = useRouter();
+  const handleLogout = () => {
+    removeAccessToken();
+    router.push("/login");
+  };
   return (
     <header className="flex items-center justify-between px-8 h-16 bg-gray-200">
       <Link href="/" className="text-2xl font-bold">
@@ -20,6 +28,12 @@ export default function Header() {
           회원가입
         </Link>
       </nav>
+      <button
+        className="bg-red-500 text-white px-4 py-2 rounded-md"
+        onClick={handleLogout}
+      >
+        로그아웃
+      </button>
     </header>
   );
 }
