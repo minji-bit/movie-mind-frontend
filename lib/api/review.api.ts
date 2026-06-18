@@ -21,3 +21,10 @@ export async function createReview(
   });
   return response;
 }
+
+export async function getReview(id: string) {
+  const response = await apiFetch(`/reviews/${id}`, {
+    method: "GET",
+  });
+  return response;
+}

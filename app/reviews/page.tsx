@@ -8,8 +8,9 @@ export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
   useEffect(() => {
-    //fetchiReviews 함수를 밖으로 빼면 컴포넌트 렌더링 때마다 새로 만들어져서 의존성 경고가 날 수 있으므로
+    //fetchReviews 함수를 밖으로 빼면 컴포넌트 렌더링 때마다 새로 만들어져서 의존성 경고가 날 수 있으므로
     //useEffect 안에 넣어준다.
     const fetchReviews = async () => {
       try {
@@ -45,7 +46,7 @@ export default function ReviewsPage() {
             <ReviewCard key={review.id} review={review} />
           ))
         ) : (
-          <li>등록된 리뷰가 없습니다.</li>
+          <p className="text-center text-gray-500">등록된 리뷰가 없습니다.</p>
         )}
       </ul>
     </div>

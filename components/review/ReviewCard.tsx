@@ -1,4 +1,5 @@
 import { Review } from "@/types/review";
+import Link from "next/link";
 
 interface ReviewCardProps {
   review: Review;
@@ -14,6 +15,9 @@ export default function ReviewCard({ review }: ReviewCardProps) {
       <p className="text-sm text-gray-500">
         {new Date(review.createdAt).toLocaleString()}
       </p>
+      <Link href={`/reviews/${review.id}`} className="text-blue-500">
+        상세보기
+      </Link>
     </li>
   );
 }

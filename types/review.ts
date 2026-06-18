@@ -13,3 +13,13 @@ export interface CreateReviewRequest {
   content: string;
   rating: number;
 }
+
+export interface ReviewResponse {
+  id: string;
+  movieTitle: string;
+  reviewTitle: string;
+  content: string;
+  rating: number;
+  createdAt: string;
+  message?: string;
+}
