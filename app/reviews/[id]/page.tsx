@@ -44,28 +44,59 @@ export default function ReviewPage() {
     router.push(`/reviews/${id}/edit`);
   };
   return (
-    <div>
-      <p className="text-lg mb-2">영화제목 : {data?.movieTitle}</p>
-      <p className="text-lg mb-2">리뷰제목 : {data?.reviewTitle}</p>
-      <p className="text-lg mb-2">리뷰내용 : {data?.content}</p>
-      <p className="text-lg mb-2">평점 : {data?.rating}</p>
-      {data && (
-        <p className="text-lg mb-2">
-          작성일 : {new Date(data?.createdAt).toLocaleString()}
-        </p>
-      )}
+    <main className="max-w-3xl mx-auto px-4 py-8">
       <button
-        className="bg-red-500 text-white px-4 py-2 rounded-md"
-        onClick={handleDelete}
+        onClick={() => router.push("/reviews")}
+        className="mb-4 text-sm text-gray-500 hover:text-blue-500"
       >
-        삭제
+        ← 리뷰 목록으로
       </button>
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-md"
-        onClick={handleUpdate}
-      >
-        수정
-      </button>
-    </div>
+
+      <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="mb-4 border-b border-gray-200 pb-4">
+          <p className="text-sm text-gray-500">영화</p>
+          <h1 className="text-2xl font-bold text-gray-900">
+            {data?.movieTitle}
+          </h1>
+
+          <h2 className="mt-2 text-lg font-semibold text-gray-700">
+            {data?.reviewTitle}
+          </h2>
+        </div>
+
+        <div className="mb-6 flex items-center gap-4 text-sm text-gray-500">
+          <span className="rounded-full bg-yellow-100 px-3 py-1 text-yellow-700">
+            ⭐ {data?.rating}
+          </span>
+
+          {data && (
+            <span>작성일 {new Date(data.createdAt).toLocaleString()}</span>
+          )}
+        </div>
+
+        <div className="mb-8">
+          <p className="mb-2 text-sm font-semibold text-gray-500">리뷰 내용</p>
+          <p className="whitespace-pre-wrap leading-7 text-gray-800">
+            {data?.content}
+          </p>
+        </div>
+
+        <div className="flex justify-end gap-2">
+          <button
+            className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            onClick={handleUpdate}
+          >
+            수정
+          </button>
+
+          <button
+            className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+            onClick={handleDelete}
+          >
+            삭제
+          </button>
+        </div>
+      </section>
+    </main>
   );
 }
