@@ -10,22 +10,34 @@ export default function ReviewPage() {
   const params = useParams();
   const id = params.id as string;
   const [data, setData] = useState<ReviewResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       const response = await getReview(id);
       const data: ReviewResponse = await response.json();
       if (!response.ok) {
         console.error("리뷰 조회 실패");
+        setErrorMessage("리뷰 조회 실패");
+        setIsLoading(false);
         return;
       }
       setData(data as ReviewResponse);
+      setIsLoading(false);
     };
     fetchData();
   }, [id]);
+  if (isLoading) {
+    return <div>리뷰를 조회중입니다...</div>;
+  }
+  if (errorMessage) {
+    return <div className="text-red-500 mb-4">{errorMessage}</div>;
+  }
   const handleDelete = async () => {
     const accessToken = getAccessToken() ?? "";
     if (!accessToken) {
-      console.error("로그인이 필요합니다.");
+      setErrorMessage("로그인이 필요합니다.");
+      setIsLoading(false);
       router.push("/login");
       return;
     }
@@ -35,13 +47,24 @@ export default function ReviewPage() {
 
       if (!response.ok) {
         console.error("리뷰 삭제 실패");
+        setErrorMessage("리뷰 삭제 실패");
+        setIsLoading(false);
         return;
       }
       router.push("/reviews");
+      setIsLoading(false);
     }
   };
   const handleUpdate = async () => {
-    router.push(`/reviews/${id}/edit`);
+    try {
+      router.push(`/reviews/${id}/edit`);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage(
+        error instanceof Error ? error.message : "리뷰 수정 실패",
+      );
+      setIsLoading(false);
+    }
   };
   return (
     <main className="max-w-3xl mx-auto px-4 py-8">
