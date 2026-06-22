@@ -4,80 +4,86 @@ import { UpdateReviewRequest } from "@/types/review";
 import { getAccessToken } from "@/lib/token";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import ReviewForm from "@/components/review/ReviewForm";
 
 export default function EditReviewPage() {
   const params = useParams();
   const id = params.id as string;
   const router = useRouter();
-  const [movieTitle, setMovieTitle] = useState("");
-  const [reviewTitle, setReviewTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [rating, setRating] = useState(0);
+  const [review, setReview] = useState<UpdateReviewRequest | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchReview = async () => {
-      const data = await getReview(id);
-      if (!data.ok) {
-        const error = await data.json();
-        throw new Error(error.message ?? "리뷰 조회 실패");
+      try {
+        const response = await getReview(id);
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message ?? "리뷰 조회 실패");
+        }
+        const review = await response.json();
+        setReview({
+          movieTitle: review.movieTitle,
+          reviewTitle: review.reviewTitle,
+          content: review.content,
+          rating: review.rating,
+        });
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+        setErrorMessage(
+          error instanceof Error ? error.message : "리뷰 조회 실패",
+        );
+        setIsLoading(false);
       }
-      const review = await data.json();
-      setMovieTitle(review.movieTitle);
-      setReviewTitle(review.reviewTitle);
-      setContent(review.content);
-      setRating(review.rating);
     };
     fetchReview();
   }, [id]);
+  if (isLoading) {
+    return <div>리뷰를 조회중입니다...</div>;
+  }
+  if (errorMessage) {
+    return <div className="text-red-500 mb-4">{errorMessage}</div>;
+  }
+  if (!review) {
+    return <div>리뷰를 찾을 수 없습니다.</div>;
+  }
+  const handleSubmit = async (values: UpdateReviewRequest) => {
+    try {
+      const accessToken = getAccessToken() ?? "";
+      if (!accessToken) {
+        router.push("/login");
+        return;
+      }
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const accessToken = getAccessToken() ?? "";
-    if (!accessToken) {
-      router.push("/login");
-      return;
+      const response = await updateReview(id, accessToken, values);
+      if (!response.ok) {
+        const error = await response.json();
+        setErrorMessage(error.message ?? "리뷰 수정 실패");
+        return;
+      }
+      router.push(`/reviews/${id}`);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage(
+        error instanceof Error ? error.message : "리뷰 수정 실패",
+      );
     }
-    const review: UpdateReviewRequest = {
-      movieTitle,
-      reviewTitle,
-      content,
-      rating,
-    };
-    const response = await updateReview(id, accessToken, review);
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.message ?? "리뷰 수정 실패");
-    }
-    router.push(`/reviews/${id}`);
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="movieTitle"
-          value={movieTitle}
-          onChange={(e) => setMovieTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          name="reviewTitle"
-          value={reviewTitle}
-          onChange={(e) => setReviewTitle(e.target.value)}
-        />
-        <textarea
-          name="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <input
-          type="number"
-          name="rating"
-          value={rating}
-          onChange={(e) => setRating(Number(e.target.value))}
-        />
-        <button type="submit">수정</button>
-      </form>
+      <h1 className="text-2xl font-bold mb-4">리뷰 수정</h1>
+      <ReviewForm
+        initialValues={{
+          movieTitle: review.movieTitle ?? "",
+          reviewTitle: review.reviewTitle ?? "",
+          content: review.content ?? "",
+          rating: review.rating ?? 0,
+        }}
+        onSubmit={handleSubmit}
+        submitText="리뷰 수정"
+      />
     </div>
   );
 }
