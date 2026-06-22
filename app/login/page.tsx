@@ -28,7 +28,7 @@ export default function LoginPage() {
       }
       //로그인 성공
       setAccessToken(data.accessToken);
-      router.push("/reviews"); //로그인 성공시 리뷰 페이지로 이동
+      window.location.href = "/reviews"; //로그인 성공시 리뷰 페이지로 이동 MVP 단계에서는 window.location.href으로 새로고침
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message); //이메일 또는 비밀번호가 일치하지 않습니다.
