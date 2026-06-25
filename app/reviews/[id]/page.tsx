@@ -1,5 +1,6 @@
 "use client";
 import { deleteReview, getReview } from "@/lib/api/review.api";
+import { analyzeMovie } from "@/lib/api/analysis.api";
 import { useRouter, useParams } from "next/navigation";
 import { getAccessToken } from "@/lib/token";
 import { useEffect, useState } from "react";
@@ -9,9 +10,10 @@ export default function ReviewPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
-  const [data, setData] = useState<ReviewResponse | null>(null);
+  const [review, setReview] = useState<ReviewResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await getReview(id);
@@ -22,7 +24,7 @@ export default function ReviewPage() {
         setIsLoading(false);
         return;
       }
-      setData(data as ReviewResponse);
+      setReview(data as ReviewResponse);
       setIsLoading(false);
     };
     fetchData();
@@ -33,6 +35,17 @@ export default function ReviewPage() {
   if (errorMessage) {
     return <div className="text-red-500 mb-4">{errorMessage}</div>;
   }
+
+  const handleAnalyze = async () => {
+    const response = await analyzeMovie(review?.movieTitle ?? "");
+    if (!response.ok) {
+      console.error("AI 분석 실패");
+      setErrorMessage("AI 분석 실패");
+      setIsLoading(false);
+      return;
+    }
+    router.push(`/analysis/${review?.movieTitle}`);
+  };
   const handleDelete = async () => {
     const accessToken = getAccessToken() ?? "";
     if (!accessToken) {
@@ -79,31 +92,38 @@ export default function ReviewPage() {
         <div className="mb-4 border-b border-gray-200 pb-4">
           <p className="text-sm text-gray-500">영화</p>
           <h1 className="text-2xl font-bold text-gray-900">
-            {data?.movieTitle}
+            {review?.movieTitle}
           </h1>
 
           <h2 className="mt-2 text-lg font-semibold text-gray-700">
-            {data?.reviewTitle}
+            {review?.reviewTitle}
           </h2>
         </div>
 
         <div className="mb-6 flex items-center gap-4 text-sm text-gray-500">
           <span className="rounded-full bg-yellow-100 px-3 py-1 text-yellow-700">
-            ⭐ {data?.rating}
+            ⭐ {review?.rating}
           </span>
 
-          {data && (
-            <span>작성일 {new Date(data.createdAt).toLocaleString()}</span>
+          {review && (
+            <span>작성일 {new Date(review.createdAt).toLocaleString()}</span>
           )}
         </div>
 
         <div className="mb-8">
           <p className="mb-2 text-sm font-semibold text-gray-500">리뷰 내용</p>
           <p className="whitespace-pre-wrap leading-7 text-gray-800">
-            {data?.content}
+            {review?.content}
           </p>
         </div>
-
+        <div>
+          <button
+            className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            onClick={handleAnalyze}
+          >
+            AI분석
+          </button>
+        </div>
         <div className="flex justify-end gap-2">
           <button
             className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
