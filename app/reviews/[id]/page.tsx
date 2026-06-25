@@ -37,14 +37,21 @@ export default function ReviewPage() {
   }
 
   const handleAnalyze = async () => {
-    const response = await analyzeMovie(review?.movieTitle ?? "");
+    if (!review?.movieTitle) {
+      // 리뷰가 없으면 분석 불가
+      setErrorMessage("영화제목이 없습니다.");
+      setIsLoading(false);
+      return;
+    }
+    const response = await analyzeMovie(review.movieTitle); // AI 분석 요청
     if (!response.ok) {
+      // AI 분석 실패
       console.error("AI 분석 실패");
       setErrorMessage("AI 분석 실패");
       setIsLoading(false);
       return;
     }
-    router.push(`/analysis/${review?.movieTitle}`);
+    router.push(`/analysis/${encodeURIComponent(review.movieTitle)}`); // 영화제목을 URL 인코딩하여 페이지로 이동
   };
   const handleDelete = async () => {
     const accessToken = getAccessToken() ?? "";
