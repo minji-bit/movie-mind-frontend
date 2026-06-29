@@ -19,7 +19,10 @@ export default function Header() {
   };
   return (
     <header className="flex items-center justify-between px-8 h-16 bg-gray-200">
-      <Link href="/" className="text-2xl font-bold">
+      <Link
+        href="/"
+        className="text-2xl font-bold hover:scale-105 transition-all duration-200"
+      >
         Movie Mind
       </Link>
       <nav className="flex gap-4">
