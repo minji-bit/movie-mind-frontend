@@ -30,6 +30,9 @@ export default function Header() {
             <Link href="/reviews/new" className="hover:text-blue-500">
               리뷰작성
             </Link>
+            <Link href="/analysis" className="hover:text-blue-500">
+              AI분석목록
+            </Link>
             <button
               className="bg-red-500 text-white px-4 py-2 rounded-md"
               onClick={handleLogout}
