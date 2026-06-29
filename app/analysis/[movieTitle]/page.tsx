@@ -36,13 +36,14 @@ export default function AnalysisPage() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  if (!analysis) {
-    // 분석 결과가 없으면 분석 실패 (여기에서 제어하니까 return문에서 analysis가 없는 경우가 없음)
-    return <div>분석 결과가 없습니다.</div>;
-  }
 
   if (errorMessage) {
     return <div className="text-red-500 mb-4">{errorMessage}</div>;
+  }
+
+  if (!analysis) {
+    // 분석 결과가 없으면 분석 실패 (여기에서 제어하니까 return문에서 analysis가 없는 경우가 없음)
+    return <div>분석 결과가 없습니다.</div>;
   }
   const sentimentStyle = {
     POSITIVE: "bg-green-100 text-green-700 border-green-200",
@@ -62,7 +63,9 @@ export default function AnalysisPage() {
           </h1>
 
           <div className="flex flex-wrap gap-2">
-            <span className="rounded-full bg-green-100 px-4 py-1 text-sm font-bold text-green-700">
+            <span
+              className={`rounded-full bg-green-100 px-4 py-1 text-sm font-bold ${sentimentStyle}`}
+            >
               {analysis.sentiment}
             </span>
             <span className="rounded-full bg-slate-100 px-4 py-1 text-sm text-slate-700">
