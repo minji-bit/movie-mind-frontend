@@ -9,4 +9,5 @@ export type Analysis = {
   genreCategory: string;
   moodCategory: string;
   confidenceScore: number;
+  createdAt: string;
 };
