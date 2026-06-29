@@ -1,4 +1,5 @@
 "use client";
+import EmptyState from "@/components/common/EmptyState";
 import Loading from "@/components/common/Loading";
 import { getAnalysisList } from "@/lib/api/analysis.api";
 import { Analysis } from "@/types/analysis";
@@ -43,7 +44,7 @@ export default function AnalysisPage() {
       <section className="mx-auto max-w-4xl rounded-3xl bg-white p-8 shadow-lg">
         <h1>분석 결과 목록</h1>
         {analysisList.length === 0 ? (
-          <p className="text-center text-gray-500">분석 결과가 없습니다.</p>
+          <EmptyState />
         ) : (
           <ul className="mt-6 space-y-4">
             {analysisList.map((analysis) => (

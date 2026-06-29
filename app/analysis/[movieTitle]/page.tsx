@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getAnalysis } from "@/lib/api/analysis.api";
 import Loading from "@/components/common/Loading";
+import EmptyState from "@/components/common/EmptyState";
 
 export default function AnalysisPage() {
   const params = useParams();
@@ -44,7 +45,7 @@ export default function AnalysisPage() {
 
   if (!analysis) {
     // 분석 결과가 없으면 분석 실패 (여기에서 제어하니까 return문에서 analysis가 없는 경우가 없음)
-    return <div>분석 결과가 없습니다.</div>;
+    return <EmptyState />;
   }
   const sentimentStyle = {
     POSITIVE: "bg-green-100 text-green-700 border-green-200",

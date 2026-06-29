@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import ReviewForm from "@/components/review/ReviewForm";
 import Loading from "@/components/common/Loading";
+import EmptyState from "@/components/common/EmptyState";
 
 export default function EditReviewPage() {
   const params = useParams();
@@ -47,7 +48,7 @@ export default function EditReviewPage() {
     return <div className="text-red-500 mb-4">{errorMessage}</div>;
   }
   if (!review) {
-    return <div>리뷰를 찾을 수 없습니다.</div>;
+    return <EmptyState />;
   }
   const handleSubmit = async (values: UpdateReviewRequest) => {
     try {

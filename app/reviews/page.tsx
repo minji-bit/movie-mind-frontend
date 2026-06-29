@@ -1,5 +1,6 @@
 "use client";
 import Loading from "@/components/common/Loading";
+import EmptyState from "@/components/common/EmptyState";
 import ReviewCard from "@/components/review/ReviewCard";
 import { getReviews } from "@/lib/api/review.api";
 import { Review } from "@/types/review";
@@ -47,7 +48,7 @@ export default function ReviewsPage() {
             <ReviewCard key={review.id} review={review} />
           ))
         ) : (
-          <p className="text-center text-gray-500">등록된 리뷰가 없습니다.</p>
+          <EmptyState />
         )}
       </ul>
     </div>
