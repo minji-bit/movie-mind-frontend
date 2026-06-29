@@ -1,5 +1,6 @@
 import { Review } from "@/types/review";
 import { useState } from "react";
+import Button from "../common/Button";
 
 interface ReactFormValues {
   movieTitle: string;
@@ -77,9 +78,7 @@ export default function ReviewForm({
           className="w-full p-2 border border-gray-300 rounded-md"
         />
       </div>
-      <button type="submit" className="bg-blue-500 text-white p-2 rounded-md">
-        {submitText}
-      </button>
+      <Button type="submit">{submitText}</Button>
     </form>
   );
 }

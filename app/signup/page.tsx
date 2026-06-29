@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signUp } from "@/lib/api/auth.api";
+import Button from "@/components/common/Button";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -78,7 +79,7 @@ export default function SignupPage() {
           onChange={handlePasswordConfirmChange}
           value={passwordConfirm}
         />
-        <button type="submit">회원가입</button>
+        <Button type="submit">회원가입</Button>
       </form>
     </div>
   );

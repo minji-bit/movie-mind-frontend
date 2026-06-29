@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/api/auth.api";
 import { setAccessToken } from "@/lib/token";
+import Button from "@/components/common/Button";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -53,7 +54,8 @@ export default function LoginPage() {
           onChange={handlePasswordChange}
           value={password}
         />
-        <button type="submit">로그인</button>
+
+        <Button type="submit">로그인</Button>
       </form>
     </div>
   );

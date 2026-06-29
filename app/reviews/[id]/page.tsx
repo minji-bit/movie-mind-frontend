@@ -6,6 +6,7 @@ import { getAccessToken } from "@/lib/token";
 import { useEffect, useState } from "react";
 import { ReviewResponse } from "@/types/review";
 import Loading from "@/components/common/Loading";
+import Button from "@/components/common/Button";
 
 export default function ReviewPage() {
   const router = useRouter();
@@ -125,27 +126,18 @@ export default function ReviewPage() {
           </p>
         </div>
         <div>
-          <button
-            className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-            onClick={handleAnalyze}
-          >
+          <Button type="button" onClick={handleAnalyze}>
             AI분석
-          </button>
+          </Button>
         </div>
         <div className="flex justify-end gap-2">
-          <button
-            className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-            onClick={handleUpdate}
-          >
+          <Button onClick={handleUpdate} type="button">
             수정
-          </button>
+          </Button>
 
-          <button
-            className="rounded-md bg-red-500 px-4 py-2 text-white hover:bg-red-600"
-            onClick={handleDelete}
-          >
+          <Button type="button" onClick={handleDelete}>
             삭제
-          </button>
+          </Button>
         </div>
       </section>
     </main>
