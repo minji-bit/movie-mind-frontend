@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/components/common/Loading";
 import { getAnalysisList } from "@/lib/api/analysis.api";
 import { Analysis } from "@/types/analysis";
 import Link from "next/link";
@@ -32,7 +33,7 @@ export default function AnalysisPage() {
     fetchAnalysisList();
   }, []);
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (errorMessage) {
     return <div>{errorMessage}</div>;

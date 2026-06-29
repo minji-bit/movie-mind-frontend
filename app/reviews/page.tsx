@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/components/common/Loading";
 import ReviewCard from "@/components/review/ReviewCard";
 import { getReviews } from "@/lib/api/review.api";
 import { Review } from "@/types/review";
@@ -32,7 +33,7 @@ export default function ReviewsPage() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (errorMessage) {
     return <div>{errorMessage}</div>;

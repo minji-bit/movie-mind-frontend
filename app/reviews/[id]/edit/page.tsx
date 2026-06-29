@@ -5,6 +5,7 @@ import { getAccessToken } from "@/lib/token";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import ReviewForm from "@/components/review/ReviewForm";
+import Loading from "@/components/common/Loading";
 
 export default function EditReviewPage() {
   const params = useParams();
@@ -40,7 +41,7 @@ export default function EditReviewPage() {
     fetchReview();
   }, [id]);
   if (isLoading) {
-    return <div>리뷰를 조회중입니다...</div>;
+    return <Loading />;
   }
   if (errorMessage) {
     return <div className="text-red-500 mb-4">{errorMessage}</div>;

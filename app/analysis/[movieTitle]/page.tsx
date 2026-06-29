@@ -3,6 +3,7 @@ import { Analysis } from "@/types/analysis";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getAnalysis } from "@/lib/api/analysis.api";
+import Loading from "@/components/common/Loading";
 
 export default function AnalysisPage() {
   const params = useParams();
@@ -34,7 +35,7 @@ export default function AnalysisPage() {
   }, [movieTitle]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (errorMessage) {

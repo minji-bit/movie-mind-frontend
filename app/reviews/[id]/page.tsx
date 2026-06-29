@@ -5,6 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { getAccessToken } from "@/lib/token";
 import { useEffect, useState } from "react";
 import { ReviewResponse } from "@/types/review";
+import Loading from "@/components/common/Loading";
 
 export default function ReviewPage() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function ReviewPage() {
     fetchData();
   }, [id]);
   if (isLoading) {
-    return <div>리뷰를 조회중입니다...</div>;
+    return <Loading />;
   }
   if (errorMessage) {
     return <div className="text-red-500 mb-4">{errorMessage}</div>;
