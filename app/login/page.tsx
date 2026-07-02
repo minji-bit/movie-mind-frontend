@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login } from "@/lib/api/auth.api";
-import { setAccessToken } from "@/lib/token";
+import { loginApi } from "@/lib/api/auth.api";
+import { useAuth } from "@/context/AuthContext";
 import Button from "@/components/common/Button";
 
 export default function LoginPage() {
@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
 
   const router = useRouter();
-
+  const { login } = useAuth();
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
@@ -22,14 +22,15 @@ export default function LoginPage() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await login({ email, password });
+      const response = await loginApi({ email, password });
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message); //이메일 또는 비밀번호가 일치하지 않습니다.
       }
       //로그인 성공
-      setAccessToken(data.accessToken);
-      window.location.href = "/reviews"; //로그인 성공시 리뷰 페이지로 이동 MVP 단계에서는 window.location.href으로 새로고침
+      login(data.accessToken); // Context에서 로그인 함수 호출
+      // window.location.href = "/reviews"; //로그인 성공시 리뷰 페이지로 이동 MVP 단계에서는 window.location.href으로 새로고침(AuthContext 생성전까지 유지)
+      router.push("/reviews"); //AuthContext 생성하여 새로고침 없이 리뷰 페이지로 이동
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message); //이메일 또는 비밀번호가 일치하지 않습니다.

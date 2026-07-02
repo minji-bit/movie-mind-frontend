@@ -1,20 +1,15 @@
 "use client";
-import { getAccessToken, removeAccessToken } from "@/lib/token";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Header() {
   const router = useRouter();
-  const [accessToken, setAccessToken] = useState<string | null>(null);
   const pathname = usePathname(); //활성 메뉴 판별
-  useEffect(() => {
-    const token = getAccessToken();
-    setAccessToken(token);
-  }, []);
+  const { isAuthenticated, logout } = useAuth();
+
   const handleLogout = () => {
-    removeAccessToken();
-    setAccessToken(null);
+    logout(); // Context에서 로그아웃 함수 호출
     router.push("/login");
   };
   return (
@@ -32,7 +27,7 @@ export default function Header() {
         >
           리뷰목록
         </Link>
-        {accessToken ? (
+        {isAuthenticated ? (
           <>
             <Link
               href="/reviews/new"

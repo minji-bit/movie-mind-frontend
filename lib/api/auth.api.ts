@@ -8,7 +8,7 @@ export async function signUp(request: SignupRequest) {
   });
   return response;
 }
-export async function login(request: LoginRequest) {
+export async function loginApi(request: LoginRequest) {
   const response = await apiFetch("/auth/login", {
     method: "POST",
     body: JSON.stringify(request),
