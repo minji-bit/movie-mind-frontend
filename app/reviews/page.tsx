@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -32,7 +33,17 @@ export default function ReviewsPage() {
     };
     fetchReviews();
   }, []);
-
+  //reviews+searchKeyword 를 통해 필터링된 리뷰를 반환한다. 파생상태여서 useState 사용 안함
+  const filteredReviews = reviews.filter((review) => {
+    const keyword = searchKeyword.trim().toLowerCase();
+    if (keyword === "") {
+      return true; //검색어가 없으면 모든 리뷰를 보여준다.
+    }
+    return (
+      review.movieTitle.toLowerCase().includes(keyword) ||
+      review.reviewTitle.toLowerCase().includes(keyword)
+    );
+  });
   if (isLoading) {
     return <Loading />;
   }
@@ -42,9 +53,19 @@ export default function ReviewsPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">리뷰 목록</h1>
+      <h2 className="text-lg font-bold mb-4">🔍 영화제목 검색</h2>
+      <input
+        type="text"
+        placeholder="영화제목을 검색하세요."
+        value={searchKeyword}
+        onChange={(e) => {
+          setSearchKeyword(e.target.value);
+        }}
+        className="w-full p-2 border border-gray-300 rounded-md mb-4"
+      />
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {reviews.length > 0 ? (
-          reviews.map((review) => (
+        {filteredReviews.length > 0 ? (
+          filteredReviews.map((review) => (
             <ReviewCard key={review.id} review={review} />
           ))
         ) : (
