@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import ReviewForm from "@/components/review/ReviewForm";
 import Loading from "@/components/common/Loading";
 import EmptyState from "@/components/common/EmptyState";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 export default function EditReviewPage() {
   const params = useParams();
@@ -74,18 +75,20 @@ export default function EditReviewPage() {
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">리뷰 수정</h1>
-      <ReviewForm
-        initialValues={{
-          movieTitle: review.movieTitle ?? "",
-          reviewTitle: review.reviewTitle ?? "",
-          content: review.content ?? "",
-          rating: review.rating ?? 0,
-        }}
-        onSubmit={handleSubmit}
-        submitText="리뷰 수정"
-      />
-    </div>
+    <ProtectedRoute>
+      <div>
+        <h1 className="text-2xl font-bold mb-4">리뷰 수정</h1>
+        <ReviewForm
+          initialValues={{
+            movieTitle: review.movieTitle ?? "",
+            reviewTitle: review.reviewTitle ?? "",
+            content: review.content ?? "",
+            rating: review.rating ?? 0,
+          }}
+          onSubmit={handleSubmit}
+          submitText="리뷰 수정"
+        />
+      </div>
+    </ProtectedRoute>
   );
 }

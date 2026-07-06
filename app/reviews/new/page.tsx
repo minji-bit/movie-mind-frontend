@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getAccessToken } from "@/lib/token";
 import ReviewForm from "@/components/review/ReviewForm";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 export default function NewReviewPage() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -43,7 +44,7 @@ export default function NewReviewPage() {
     }
   };
   return (
-    <>
+    <ProtectedRoute>
       <h1 className="text-2xl font-bold mb-4">리뷰 작성</h1>
       {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
       <ReviewForm
@@ -56,6 +57,6 @@ export default function NewReviewPage() {
         onSubmit={handleSubmit}
         submitText="리뷰 작성"
       />
-    </>
+    </ProtectedRoute>
   );
 }
