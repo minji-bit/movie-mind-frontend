@@ -1,19 +1,22 @@
 "use client";
+import Button from "@/components/common/Button";
 import EmptyState from "@/components/common/EmptyState";
 import Loading from "@/components/common/Loading";
 import { getAnalysisList } from "@/lib/api/analysis.api";
 import { Analysis } from "@/types/analysis";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function AnalysisPage() {
   const [analysisList, setAnalysisList] = useState<Analysis[]>([]);
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const router = useRouter();
   const sentimentStyle = {
     POSITIVE: "bg-green-100 text-green-800",
     NEGATIVE: "bg-red-100 text-red-800",
-    MIXED: "bg-gray-100 text-gray-800",
+    MIXED: "bg-yellow-100 text-yellow-800",
   };
   useEffect(() => {
     const fetchAnalysisList = async () => {
@@ -24,15 +27,22 @@ export default function AnalysisPage() {
         }
         const data = await response.json();
         setAnalysisList(data);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching analysis list:", error);
         setErrorMessage("분석 결과를 불러오는 중 오류가 발생했습니다.");
+      } finally {
         setLoading(false);
       }
     };
     fetchAnalysisList();
   }, []);
+  const filteredAnalysisList = analysisList.filter((analysis) => {
+    const keyword = searchKeyword.trim().toLowerCase();
+    if (keyword === "") {
+      return true; //검색어가 없으면 모든 분석 결과를 보여준다.
+    }
+    return analysis.movieTitle.toLowerCase().includes(keyword);
+  });
   if (loading) {
     return <Loading />;
   }
@@ -43,11 +53,27 @@ export default function AnalysisPage() {
     <main className="min-h-screen bg-slate-50 px-6 py-10">
       <section className="mx-auto max-w-4xl rounded-3xl bg-white p-8 shadow-lg">
         <h1>분석 결과 목록</h1>
+        <h2 className="text-lg font-bold mb-4">🔍 영화제목 검색</h2>
+        <input
+          type="text"
+          placeholder="영화제목을 검색하세요."
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded-md mb-4"
+        />
         {analysisList.length === 0 ? (
-          <EmptyState />
+          <EmptyState
+            title="분석 결과가 없습니다."
+            description="리뷰 상세에서 AI 분석을 실행해보세요."
+          />
+        ) : filteredAnalysisList.length === 0 ? (
+          <EmptyState
+            title="검색 결과가 없습니다."
+            description="다른 영화 제목으로 검색해보세요."
+          />
         ) : (
           <ul className="mt-6 space-y-4">
-            {analysisList.map((analysis) => (
+            {filteredAnalysisList.map((analysis) => (
               <li
                 key={`${analysis.movieTitle}-${analysis.createdAt.toString()}`}
                 className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
@@ -67,11 +93,15 @@ export default function AnalysisPage() {
                     >
                       {analysis.sentiment}
                     </span>
-                    <Link
-                      href={`/analysis/${encodeURIComponent(analysis.movieTitle)}`} //한글/공백 영화 제목이면 깨질수 있으므로 인코딩
+                    <Button
+                      onClick={() => {
+                        router.push(
+                          `/analysis/${encodeURIComponent(analysis.movieTitle)}`,
+                        );
+                      }}
                     >
                       [결과보기]
-                    </Link>
+                    </Button>
                   </div>
                 </div>
               </li>
