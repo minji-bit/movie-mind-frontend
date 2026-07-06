@@ -69,7 +69,10 @@ export default function ReviewsPage() {
             <ReviewCard key={review.id} review={review} />
           ))
         ) : (
-          <EmptyState />
+          <EmptyState
+            title="검색 결과가 없습니다."
+            description="다른 영화 제목으로 검색해보세요."
+          />
         )}
       </ul>
     </div>
