@@ -9,8 +9,10 @@ export default function Header() {
   const { isAuthenticated, logout } = useAuth();
 
   const handleLogout = () => {
-    logout(); // Context에서 로그아웃 함수 호출
-    router.push("/login");
+    if (window.confirm("로그아웃하시겠습니까?")) {
+      logout(); // Context에서 로그아웃 함수 호출
+      router.replace("/login");
+    }
   };
   return (
     <header className="flex items-center justify-between px-8 h-16 bg-gray-200">
