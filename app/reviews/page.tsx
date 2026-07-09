@@ -48,33 +48,53 @@ export default function ReviewsPage() {
     return <Loading />;
   }
   if (errorMessage) {
-    return <div>{errorMessage}</div>;
+    return (
+      <main className="mx-auto max-w-5xl px-6 py-10">
+        <div className="rounded-2xl border border-red-500/30 bg-red-500/10 px-6 py-5 text-red-300">
+          {errorMessage}
+        </div>
+      </main>
+    );
   }
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">리뷰 목록</h1>
-      <h2 className="text-lg font-bold mb-4">🔍 영화제목 검색</h2>
-      <input
-        type="text"
-        placeholder="영화제목을 검색하세요."
-        value={searchKeyword}
-        onChange={(e) => {
-          setSearchKeyword(e.target.value);
-        }}
-        className="w-full p-2 border border-gray-300 rounded-md mb-4"
-      />
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredReviews.length > 0 ? (
-          filteredReviews.map((review) => (
+    <main className="mx-auto max-w-6xl px-6 py-10">
+      <section className="mb-8">
+        <h1 className="text-3xl font-extrabold text-white">리뷰 목록</h1>
+        <p className="mt-2 text-sm text-zinc-400">
+          등록된 영화 리뷰를 검색하고 상세 내용을 확인해보세요.
+        </p>
+      </section>
+
+      <section className="mb-8 rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+        <label
+          htmlFor="review-search"
+          className="mb-3 block text-sm font-semibold text-zinc-300"
+        >
+          🔍 영화 제목 또는 리뷰 제목 검색
+        </label>
+
+        <input
+          id="review-search"
+          type="text"
+          placeholder="검색어를 입력하세요."
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          className="w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-white outline-none placeholder:text-zinc-500 focus:border-violet-500"
+        />
+      </section>
+
+      {filteredReviews.length > 0 ? (
+        <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {filteredReviews.map((review) => (
             <ReviewCard key={review.id} review={review} />
-          ))
-        ) : (
-          <EmptyState
-            title="검색 결과가 없습니다."
-            description="다른 영화 제목으로 검색해보세요."
-          />
-        )}
-      </ul>
-    </div>
+          ))}
+        </ul>
+      ) : (
+        <EmptyState
+          title="검색 결과가 없습니다."
+          description="다른 영화 제목이나 리뷰 제목으로 검색해보세요."
+        />
+      )}
+    </main>
   );
 }

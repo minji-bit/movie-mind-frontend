@@ -89,28 +89,28 @@ export default function ReviewPage() {
     }
   };
   return (
-    <main className="max-w-3xl mx-auto px-4 py-8">
+    <main className="mx-auto max-w-3xl px-4 py-10">
       <button
         onClick={() => router.push("/reviews")}
-        className="mb-4 text-sm text-gray-500 hover:text-blue-500"
+        className="mb-5 text-sm text-zinc-400 transition hover:text-violet-300"
       >
         ← 리뷰 목록으로
       </button>
 
-      <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-        <div className="mb-4 border-b border-gray-200 pb-4">
-          <p className="text-sm text-gray-500">영화</p>
-          <h1 className="text-2xl font-bold text-gray-900">
+      <section className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
+        <div className="mb-5 border-b border-zinc-800 pb-5">
+          <p className="text-sm text-zinc-500">영화</p>
+          <h1 className="mt-1 text-3xl font-bold text-white">
             {review?.movieTitle}
           </h1>
 
-          <h2 className="mt-2 text-lg font-semibold text-gray-700">
+          <h2 className="mt-3 text-lg font-semibold text-zinc-300">
             {review?.reviewTitle}
           </h2>
         </div>
 
-        <div className="mb-6 flex items-center gap-4 text-sm text-gray-500">
-          <span className="rounded-full bg-yellow-100 px-3 py-1 text-yellow-700">
+        <div className="mb-6 flex flex-wrap items-center gap-3 text-sm text-zinc-400">
+          <span className="rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-yellow-300">
             ⭐ {review?.rating}
           </span>
 
@@ -120,24 +120,34 @@ export default function ReviewPage() {
         </div>
 
         <div className="mb-8">
-          <p className="mb-2 text-sm font-semibold text-gray-500">리뷰 내용</p>
-          <p className="whitespace-pre-wrap leading-7 text-gray-800">
+          <p className="mb-3 text-sm font-semibold text-zinc-500">리뷰 내용</p>
+          <p className="whitespace-pre-wrap leading-7 text-zinc-200">
             {review?.content}
           </p>
         </div>
-        <div>
+
+        <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
           <Button type="button" onClick={handleAnalyze}>
-            AI분석
-          </Button>
-        </div>
-        <div className="flex justify-end gap-2">
-          <Button onClick={handleUpdate} type="button">
-            수정
+            AI 분석
           </Button>
 
-          <Button type="button" onClick={handleDelete}>
-            삭제
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              onClick={handleUpdate}
+              type="button"
+              className="bg-zinc-800 hover:bg-zinc-700"
+            >
+              수정
+            </Button>
+
+            <Button
+              type="button"
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              삭제
+            </Button>
+          </div>
         </div>
       </section>
     </main>

@@ -12,24 +12,6 @@ export default function SignupPage() {
 
   const router = useRouter();
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-
-  const handleNicknameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(event.target.value);
-  };
-
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-
-  const handlePasswordConfirmChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setPasswordConfirm(event.target.value);
-  };
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (password !== passwordConfirm) {
@@ -52,35 +34,64 @@ export default function SignupPage() {
     }
   };
   return (
-    <div>
-      <h1>Signup</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="이메일"
-          onChange={handleEmailChange}
-          value={email}
-        />
-        <input
-          type="text"
-          placeholder="닉네임"
-          onChange={handleNicknameChange}
-          value={nickname}
-        />
-        <input
-          type="password"
-          placeholder="비밀번호"
-          onChange={handlePasswordChange}
-          value={password}
-        />
-        <input
-          type="password"
-          placeholder="비밀번호 확인"
-          onChange={handlePasswordConfirmChange}
-          value={passwordConfirm}
-        />
-        <Button type="submit">회원가입</Button>
-      </form>
-    </div>
+    <main className="min-h-screen flex items-center justify-center px-4">
+      <section className="w-full max-w-md rounded-2xl bg-zinc-900 p-8 shadow-2xl border border-zinc-800">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-white">회원가입</h1>
+          <p className="mt-2 text-sm text-zinc-400">
+            MovieMind에 오신 것을 환영합니다
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="email"
+            placeholder="이메일"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-white placeholder:text-zinc-500 outline-none focus:border-violet-500"
+          />
+
+          <input
+            type="text"
+            placeholder="닉네임"
+            onChange={(e) => setNickname(e.target.value)}
+            value={nickname}
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-white placeholder:text-zinc-500 outline-none focus:border-violet-500"
+          />
+
+          <input
+            type="password"
+            placeholder="비밀번호"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-white placeholder:text-zinc-500 outline-none focus:border-violet-500"
+          />
+
+          <input
+            type="password"
+            placeholder="비밀번호 확인"
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+            value={passwordConfirm}
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-white placeholder:text-zinc-500 outline-none focus:border-violet-500"
+          />
+
+          <Button type="submit" className="mt-2 w-full">
+            회원가입
+          </Button>
+        </form>
+
+        <p className="mt-6 text-center text-sm text-zinc-400">
+          이미 계정이 있으신가요?{" "}
+          <button
+            type="button"
+            onClick={() => router.push("/login")}
+            className="text-violet-400 hover:text-violet-300"
+          >
+            로그인
+          </button>
+        </p>
+      </section>
+    </main>
   );
 }

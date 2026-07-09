@@ -1,72 +1,72 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Header() {
   const router = useRouter();
-  const pathname = usePathname(); //활성 메뉴 판별
+  const pathname = usePathname();
   const { isAuthenticated, logout } = useAuth();
 
   const handleLogout = () => {
     if (window.confirm("로그아웃하시겠습니까?")) {
-      logout(); // Context에서 로그아웃 함수 호출
+      logout();
       router.replace("/login");
     }
   };
+
+  const navClass = (href: string) =>
+    `transition hover:text-violet-300 ${
+      pathname === href ? "font-bold text-violet-400" : "text-zinc-300"
+    }`;
+
   return (
-    <header className="flex items-center justify-between px-8 h-16 bg-gray-200">
-      <Link
-        href="/"
-        className="text-2xl font-bold hover:scale-105 transition-all duration-200"
-      >
-        Movie Mind
-      </Link>
-      <nav className="flex gap-4">
+    <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link
-          href="/reviews"
-          className={`hover:text-blue-500 ${pathname === "/reviews" ? "text-blue-500 font-bold" : "text-gray-700"}`}
+          href="/"
+          className="text-2xl font-extrabold text-white transition hover:scale-105"
         >
-          리뷰목록
+          MovieMind
         </Link>
-        {isAuthenticated ? (
-          <>
-            <Link
-              href="/reviews/new"
-              className={`hover:text-blue-500 ${pathname === "/reviews/new" ? "text-blue-500 font-bold" : "text-gray-700"}`}
-            >
-              리뷰작성
-            </Link>
-            <Link
-              href="/analysis"
-              className={`hover:text-blue-500 ${pathname === "/analysis" ? "text-blue-500 font-bold" : "text-gray-700"}`}
-            >
-              AI분석목록
-            </Link>
-            <button
-              className={`bg-red-500 text-white px-4 py-2 rounded-md ${pathname === "/login" ? "text-blue-500 font-bold" : "text-gray-700"}`}
-              onClick={handleLogout}
-            >
-              로그아웃
-            </button>
-          </>
-        ) : (
-          <>
-            <Link
-              href="/login"
-              className={`hover:text-blue-500 ${pathname === "/login" ? "text-blue-500 font-bold" : "text-gray-700"}`}
-            >
-              로그인
-            </Link>
-            <Link
-              href="/signup"
-              className={`hover:text-blue-500 ${pathname === "/signup" ? "text-blue-500 font-bold" : "text-gray-700"}`}
-            >
-              회원가입
-            </Link>
-          </>
-        )}
-      </nav>
+
+        <nav className="flex items-center gap-5 text-sm">
+          <Link href="/reviews" className={navClass("/reviews")}>
+            리뷰목록
+          </Link>
+
+          {isAuthenticated ? (
+            <>
+              <Link href="/reviews/new" className={navClass("/reviews/new")}>
+                리뷰작성
+              </Link>
+              <Link href="/analysis" className={navClass("/analysis")}>
+                AI분석목록
+              </Link>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="rounded-xl border border-red-500/40 px-4 py-2 text-sm font-semibold text-red-300 transition hover:bg-red-500/10"
+              >
+                로그아웃
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className={navClass("/login")}>
+                로그인
+              </Link>
+              <Link
+                href="/signup"
+                className="rounded-xl bg-violet-600 px-4 py-2 font-semibold text-white transition hover:bg-violet-700"
+              >
+                회원가입
+              </Link>
+            </>
+          )}
+        </nav>
+      </div>
     </header>
   );
 }

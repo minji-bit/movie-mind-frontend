@@ -24,61 +24,77 @@ export default function ReviewForm({
   const [reviewTitle, setReviewTitle] = useState(initialValues.reviewTitle);
   const [content, setContent] = useState(initialValues.content);
   const [rating, setRating] = useState(initialValues.rating);
+  const inputClass =
+    "w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-white outline-none placeholder:text-zinc-500 focus:border-violet-500";
+
+  const labelClass = "text-sm font-semibold text-zinc-300";
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit({ movieTitle, reviewTitle, content, rating });
       }}
-      className="flex flex-col gap-4"
+      className="space-y-5"
     >
-      <div className="flex flex-col gap-2">
-        <label htmlFor="movieTitle">영화 제목</label>
+      <div className="space-y-2">
+        <label htmlFor="movieTitle" className={labelClass}>
+          영화 제목
+        </label>
         <input
           type="text"
           id="movieTitle"
-          name="movieTitle"
           value={movieTitle}
           onChange={(e) => setMovieTitle(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-md"
+          className={inputClass}
         />
       </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="reviewTitle">리뷰 제목</label>
+
+      <div className="space-y-2">
+        <label htmlFor="reviewTitle" className={labelClass}>
+          리뷰 제목
+        </label>
         <input
           type="text"
           id="reviewTitle"
-          name="reviewTitle"
           value={reviewTitle}
           onChange={(e) => setReviewTitle(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-md"
+          className={inputClass}
         />
       </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="content">리뷰 내용</label>
+
+      <div className="space-y-2">
+        <label htmlFor="content" className={labelClass}>
+          리뷰 내용
+        </label>
         <textarea
           id="content"
-          name="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-md"
+          rows={8}
+          className={inputClass}
         />
       </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="rating">평점</label>
+
+      <div className="space-y-2">
+        <label htmlFor="rating" className={labelClass}>
+          평점
+        </label>
         <input
           type="number"
           id="rating"
-          name="rating"
           value={rating}
           min={0}
           max={5}
           step={0.5}
           onChange={(e) => setRating(Number(e.target.value))}
-          className="w-full p-2 border border-gray-300 rounded-md"
+          className={inputClass}
         />
       </div>
-      <Button type="submit">{submitText}</Button>
+
+      <Button type="submit" className="w-full">
+        {submitText}
+      </Button>
     </form>
   );
 }

@@ -7,16 +7,30 @@ interface ReviewCardProps {
 
 export default function ReviewCard({ review }: ReviewCardProps) {
   return (
-    <li className="border border-gray-300 rounded-md p-4 shadow-md hover:shadow-lg transition-shadow duration-300">
-      <h3 className="text-lg font-bold">{review.movieTitle}</h3>
-      <p className="text-sm text-gray-500">{review.reviewTitle}</p>
-      <p className="text-sm text-gray-500 line-clamp-3">{review.content}</p>
-      <p className="text-sm text-gray-500">⭐{review.rating}</p>
-      <p className="text-sm text-gray-500">
-        {new Date(review.createdAt).toLocaleString()}
+    <li className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5 shadow-lg transition hover:-translate-y-1 hover:border-violet-500/50 hover:shadow-2xl">
+      <div className="mb-4">
+        <h3 className="text-xl font-bold text-white">{review.movieTitle}</h3>
+        <p className="mt-1 text-sm font-medium text-zinc-300">
+          {review.reviewTitle}
+        </p>
+      </div>
+
+      <p className="mb-4 line-clamp-3 text-sm leading-6 text-zinc-400">
+        {review.content}
       </p>
-      <Link href={`/reviews/${review.id}`} className="text-blue-500">
-        상세보기
+
+      <div className="mb-4 flex items-center justify-between text-sm text-zinc-500">
+        <span className="rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-yellow-300">
+          ⭐ {review.rating}
+        </span>
+        <span>{new Date(review.createdAt).toLocaleDateString()}</span>
+      </div>
+
+      <Link
+        href={`/reviews/${review.id}`}
+        className="inline-flex text-sm font-semibold text-violet-400 transition hover:text-violet-300"
+      >
+        상세보기 →
       </Link>
     </li>
   );

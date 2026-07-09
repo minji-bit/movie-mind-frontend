@@ -10,10 +10,10 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
         <AuthProvider>
           <Header />
-          {children}
+          <div className="flex-1">{children}</div>
           <Footer />
         </AuthProvider>
       </body>

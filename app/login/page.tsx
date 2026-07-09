@@ -1,4 +1,6 @@
 "use client";
+
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginApi } from "@/lib/api/auth.api";
@@ -11,53 +13,69 @@ export default function LoginPage() {
 
   const router = useRouter();
   const { login } = useAuth();
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     try {
       const response = await loginApi({ email, password });
       const data = await response.json();
+
       if (!response.ok) {
-        throw new Error(data.message); //이메일 또는 비밀번호가 일치하지 않습니다.
+        throw new Error(data.message);
       }
-      //로그인 성공
-      login(data.accessToken); // Context에서 로그인 함수 호출
-      // window.location.href = "/reviews"; //로그인 성공시 리뷰 페이지로 이동 MVP 단계에서는 window.location.href으로 새로고침(AuthContext 생성전까지 유지)
-      router.replace("/reviews"); //AuthContext 생성하여 새로고침 없이 리뷰 페이지로 이동 //push는 뒤로가기 버튼을 눌렀을 때 이전 페이지로 이동하는 것을 의미하므로 replace를 사용하여  리뷰 페이지로 이동
+
+      login(data.accessToken);
+      router.replace("/reviews");
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.error(error.message); //이메일 또는 비밀번호가 일치하지 않습니다.
+        alert(error.message);
       } else {
-        console.error("로그인 실패");
+        alert("로그인에 실패했습니다.");
       }
     }
   };
-  return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="이메일"
-          onChange={handleEmailChange}
-          value={email}
-        />
-        <input
-          type="password"
-          placeholder="비밀번호"
-          onChange={handlePasswordChange}
-          value={password}
-        />
 
-        <Button type="submit">로그인</Button>
-      </form>
-    </div>
+  return (
+    <main className="flex min-h-screen items-center justify-center px-4">
+      <section className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-8 shadow-2xl">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-white">로그인</h1>
+          <p className="mt-2 text-sm text-zinc-400">다시 만나서 반가워요</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="email"
+            placeholder="이메일"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-white outline-none placeholder:text-zinc-500 focus:border-violet-500"
+          />
+
+          <input
+            type="password"
+            placeholder="비밀번호"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-white outline-none placeholder:text-zinc-500 focus:border-violet-500"
+          />
+
+          <Button type="submit" className="mt-2 w-full">
+            로그인
+          </Button>
+        </form>
+
+        <p className="mt-6 text-center text-sm text-zinc-400">
+          아직 계정이 없으신가요?{" "}
+          <Link
+            href="/signup"
+            className="text-violet-400 hover:text-violet-300"
+          >
+            회원가입
+          </Link>
+        </p>
+      </section>
+    </main>
   );
 }
