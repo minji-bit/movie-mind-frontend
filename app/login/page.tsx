@@ -30,7 +30,7 @@ export default function LoginPage() {
       //로그인 성공
       login(data.accessToken); // Context에서 로그인 함수 호출
       // window.location.href = "/reviews"; //로그인 성공시 리뷰 페이지로 이동 MVP 단계에서는 window.location.href으로 새로고침(AuthContext 생성전까지 유지)
-      router.push("/reviews"); //AuthContext 생성하여 새로고침 없이 리뷰 페이지로 이동
+      router.replace("/reviews"); //AuthContext 생성하여 새로고침 없이 리뷰 페이지로 이동 //push는 뒤로가기 버튼을 눌렀을 때 이전 페이지로 이동하는 것을 의미하므로 replace를 사용하여  리뷰 페이지로 이동
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message); //이메일 또는 비밀번호가 일치하지 않습니다.

@@ -42,7 +42,7 @@ export default function SignupPage() {
       if (!response.ok) {
         throw new Error(data.message); //이메일이 이미 존재합니다.
       }
-      router.push("/login"); //회원가입 성공시 로그인 페이지로 이동
+      router.replace("/login"); //회원가입 성공시 로그인 페이지로 이동 //push는 뒤로가기 버튼을 눌렀을 때 이전 페이지로 이동하는 것을 의미하므로 replace를 사용하여 새로고침 없이 로그인 페이지로 이동
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message); //이메일이 이미 존재합니다.
